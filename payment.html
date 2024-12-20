@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+         body {
+            background-image: url("https://c0.wallpaperflare.com/preview/839/412/980/food-and-drink-pizza-pizzas-tomato.jpg");
+            object-fit: cover;
+            background-size: 1600px;
+            background-repeat: no-repeat;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #080808;
+        }
+
+        .cart-summary {
+            margin-bottom: 20px;
+        }
+
+        .cart-summary table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .cart-summary th, .cart-summary td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .payment-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .payment-form label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .payment-form input {
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .payment-form button {
+            padding: 15px;
+            background-color: #28a745;
+            color: #fff;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .payment-form button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Payment Page</h2>
+
+        <!-- Cart Summary -->
+        <div class="cart-summary">
+            <h3>Order Summary</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody id="cart-details">
+                    <!-- Dynamic Content -->
+                </tbody>
+            </table>
+            <h4>Total: ₹<span id="total-amount">0</span></h4>
+        </div>
+
+        <!-- Payment Form -->
+        <form class="payment-form" id="payment-form">
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" placeholder="Enter your Address" required>
+
+            <button type="submit">Pay Now</button>
+        </form>
+    </div>
+
+    <script>
+        // Retrieve cart data from localStorage
+        const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
+        const savedTotalPrice = localStorage.getItem('totalPrice') || 0;
+
+        // Populate the cart details dynamically
+        const cartDetails = document.getElementById('cart-details');
+        const totalAmountElement = document.getElementById('total-amount');
+
+        savedCart.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.pizzaName}</td>
+                <td>${item.quantity || 1}</td> <!-- Display quantity if available -->
+                <td>₹${item.price * (item.quantity || 1)}</td>
+            `;
+            cartDetails.appendChild(row);
+        });
+
+        totalAmountElement.textContent = savedTotalPrice;
+
+        // Handle payment form submission
+        const paymentForm = document.getElementById('payment-form');
+        paymentForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            // Simulate a payment process
+            alert('Payment Successful! Thank you for your order.');
+
+            // Clear cart data and reset the form
+            localStorage.removeItem('cart');
+            localStorage.removeItem('totalPrice');
+            cartDetails.innerHTML = '';
+            totalAmountElement.textContent = '0';
+            paymentForm.reset();
+        });
+    </script>
+</body>
+</html>
